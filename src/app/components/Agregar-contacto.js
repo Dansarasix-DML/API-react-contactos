@@ -8,14 +8,23 @@ function AgregarContacto() {
   const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
   const [provincia, setProvincia] = useState('');
+  const [texto, setTexto] = useState('');
+  const [clase, setClase] = useState('');
+  const [mostrarMensaje, setMostrarMensaje] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await axios.post('http://contactos.es/contactos/', { nombre, telefono, email, provincia });
+      setTexto("El usuario se ha creado con éxito, regresa al Home para ver tu contacto nuevo.");
+      setClase("mensaje1");
+      setMostrarMensaje(true);
       // Lógica adicional después de agregar el contacto, como redirigir a la lista de contactos
     } catch (error) {
       console.error('Error al agregar el contacto:', error);
+      setTexto("Ha habido un error al agregar el usuario.");
+      setClase("mensaje2");
+      setMostrarMensaje(true);
     }
   }
 
@@ -44,6 +53,11 @@ function AgregarContacto() {
         </div>
         <button type="submit">Agregar</button>
       </form>
+      {mostrarMensaje && (
+        <div className={clase}>
+         {texto}
+        </div>
+      )}
     </div>
   );
 }

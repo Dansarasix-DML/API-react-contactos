@@ -8,6 +8,9 @@ export default function BorrarContacto({id}) {
     const [telefono, setTelefono] = useState('');
     const [email, setEmail] = useState('');
     const [provincia, setProvincia] = useState('');
+    const [texto, setTexto] = useState('');
+    const [clase, setClase] = useState('');
+    const [mostrarMensaje, setMostrarMensaje] = useState(false);
 
     useEffect(() => {
         // Lógica para obtener y establecer los datos del contacto con el idContacto
@@ -30,22 +33,34 @@ export default function BorrarContacto({id}) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setClase("mensaje2");
         try {
             await axios.delete(`http://contactos.es/contactos/${id}`);
+            setTexto("El usuario se ha borrado con éxito, regresa al Home.");
+            setMostrarMensaje(true);
             // Lógica adicional después de borrar el contacto
         } catch (error) {
             console.error('Error al borrar el contacto:', error);
+            setTexto("Ha habido un problema al editar el usuario.");
+            setMostrarMensaje(true);
         }
     }
 
     return(
-        <div className='datos'>
-            <strong>¿Seguro qué deseas eliminar este contacto?</strong>
-            <p>Nombre: {nombre}</p>
-            <p>Teléfono: {telefono}</p>
-            <p>Email: {email}</p>
-            <p>Provincia: {provincia}</p>
-            <button onClick={handleSubmit}>Borrar</button>
-        </div>
+        <>
+            <div className='datos'>
+                <strong>¿Seguro qué deseas eliminar este contacto?</strong>
+                <p>Nombre: {nombre}</p>
+                <p>Teléfono: {telefono}</p>
+                <p>Email: {email}</p>
+                <p>Provincia: {provincia}</p>
+                <button onClick={handleSubmit}>Borrar</button>
+            </div>
+            {mostrarMensaje && (
+                <div className={clase}>
+                {texto}
+                </div>
+            )}
+        </>
     );
 }

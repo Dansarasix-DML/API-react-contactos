@@ -7,6 +7,9 @@ export default function EditarContacto({ id }) {
     const [telefono, setTelefono] = useState('');
     const [email, setEmail] = useState('');
     const [provincia, setProvincia] = useState('');
+    const [texto, setTexto] = useState('');
+    const [clase, setClase] = useState('');
+    const [mostrarMensaje, setMostrarMensaje] = useState(false);
 
     useEffect(() => {
         // Lógica para obtener y establecer los datos del contacto con el idContacto
@@ -31,9 +34,15 @@ export default function EditarContacto({ id }) {
         event.preventDefault();
         try {
             await axios.put(`http://contactos.es/contactos/${id}`, { nombre, telefono, email, provincia });
+            setTexto("El usuario se ha editado con éxito, regresa al Home para ver tu contacto editado.");
+            setClase("mensaje1");
+            setMostrarMensaje(true);
             // Lógica adicional después de editar el contacto
         } catch (error) {
             console.error('Error al editar el contacto:', error);
+            setTexto("Ha habido un problema al editar el usuario.");
+            setClase("mensaje2");
+            setMostrarMensaje(true);
         }
     }
 
@@ -62,6 +71,11 @@ export default function EditarContacto({ id }) {
                 </div>
                 <button type="submit">Editar</button>
             </form>
+            {mostrarMensaje && (
+                <div className={clase}>
+                {texto}
+                </div>
+            )}
         </div>
     );
 
