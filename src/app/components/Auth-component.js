@@ -1,24 +1,40 @@
 'use client';
 import React, { useState } from 'react';
-import axios from 'axios';
 import { estilos } from "@/app/css/style.css";
 
 
-const AuthComponent = ({ onLogin }) => {
+const AuthComponent = () => {
     const [usuario, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const login = async () => {
+        try {
+            const response = await fetch("http://contactos.es/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    usuario: usuario,
+                    password: password,
+                }),
+            });
+            const data = await response.json();
+            if (data.jwt) {
+                console.log("Inicio de sesión exitoso");
+                console.log(data.jwt);
+                
+            } else {
+                console.error("Error de inicio de sesión");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
     const handleLogin = async (e) => {
         e.preventDefault();
-        // Aquí puedes hacer la llamada a tu API para autenticar al usuario
-        try {
-            console.log({ usuario, password });
-            const response = await axios.post('http://contactos.es/login', { usuario, password });
-            const data = await response.data;
-            // onLogin(data.token); // Llama a la función onLogin con el token recibido
-        } catch (error) {
-            console.error('Error al iniciar sesión:', error);
-        }
+        login();
     };
 
     return (

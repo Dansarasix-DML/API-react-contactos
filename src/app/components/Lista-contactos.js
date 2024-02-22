@@ -24,13 +24,11 @@ function ListaContactos() {
         try {
           const response = await axios.get(`http://contactos.es/contactos/${id}`);
           console.log("Response data:", response.data);
-          if (Array.isArray(response.data) && response.data.length > 0) {
-            // Si la respuesta es un array, tomamos el primer elemento
-            setContacto(response.data[0]);
-          } else {
-            // Si la respuesta no es un array o está vacía, establecemos contacto en null
-            setContacto(null);
-          }
+          let resp = (Array.isArray(response.data) && response.data.length > 0) ?
+          // Si la respuesta es un array, tomamos el primer elemento
+          // Si la respuesta no es un array o está vacía, establecemos contacto en null
+          response.data[0] : null;
+          setContacto(resp);
         } catch (error) {
           console.error("Error al obtener el contacto:", error);
           setContacto(null); // Reinicia el estado de contacto si hay un error
